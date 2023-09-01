@@ -1,0 +1,87 @@
+
+if (findfeedback) {
+
+    await quizReturnModel.findByIdAndUpdate(
+      { _id: feedback_id },
+      {
+
+        $set: {
+          score_rate: (findfeedback.total_score/findfeedback.total_point)*100,
+        },
+      },
+      {
+
+        new: true,
+    
+      }
+    );
+
+  let badgename="";
+  if(findfeedback.score_rate===100){
+    badgename="The Don"
+  }
+  if(
+    findfeedback.score_rate >=90 ||  findfeedback.score_rate < 100
+
+  ){
+    badgename="Pythagoras"
+  }
+  if(
+    findfeedback.score_rate >=80 ||  findfeedback.score_rate < 90
+  ){
+
+    badgename="Hypatia"
+
+  }
+
+
+  if(
+    findfeedback.score_rate >=70 ||  findfeedback.score_rate < 90
+  ){
+
+    badgename="Intermediate"
+
+  }
+
+    if(findfeedback.score_rate>70){
+
+  const newbadge= new BadgeModel({
+    name: badgename,
+    subject:subjectid,
+    student:studentid,quiz:test_id
+  })
+
+  await badgename.save();
+  console.log(badgename)
+  
+
+
+  
+  await User.findByIdAndUpdate(
+    { _id: studentid },
+    {
+      $push: {
+        quizes: savefeed._id,
+      },
+      $set:{
+        subjects:subjectid
+      }
+      
+    },
+    {
+      new: true,
+      useFindAndModify: false,
+    }
+  );
+
+
+
+}
+
+
+
+
+
+
+
+  }
